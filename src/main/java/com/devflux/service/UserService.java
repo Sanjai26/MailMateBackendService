@@ -19,5 +19,13 @@ public class UserService
 		List<UserEntity> getAllUserEntity = userRepository.findAll();
 		return getAllUserEntity;
 	}
+	
+	public List<UserEntity> findByCountry(String country)
+	{
+		List<UserEntity> getAllUserEntity = userRepository.findByCountry(country);
+		return getAllUserEntity;
+	}
+	
+	
 
 }

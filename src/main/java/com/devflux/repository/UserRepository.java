@@ -8,6 +8,9 @@ import com.devflux.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long>
 {
+
+	List<UserEntity> findByCountry(String country);
+	
 //	public int saveUser(UserEntity user);
 //
 //	public List<UserEntity> getAllUsers();

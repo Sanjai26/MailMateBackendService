@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devflux.entity.UserEntity;
@@ -24,6 +25,12 @@ public class UserController
 	public List<UserEntity> getAllUsers()
 	{
 		return userService.getAllUsers();
+	}
+	
+	@GetMapping("/getUsersByCountry")
+	public List<UserEntity> getUsersByCountry(@RequestParam String country)
+	{
+		return userService.findByCountry(country);
 	}
 	
 }
