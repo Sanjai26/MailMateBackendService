@@ -10,14 +10,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>
 {
 
 	List<UserEntity> findByCountry(String country);
-	
-//	public int saveUser(UserEntity user);
-//
-//	public List<UserEntity> getAllUsers();
-//
-//	public UserEntity updateUser(UserEntity user);
-//
-//	public void deleteUserById(Long id);
-//
-//	public List<UserEntity> saveAllUser(List<UserEntity> users);
 }

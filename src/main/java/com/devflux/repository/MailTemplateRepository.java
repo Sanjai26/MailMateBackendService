@@ -1,8 +1,10 @@
 package com.devflux.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.devflux.entity.MailTemplateEntity;
 
-public interface MailTemplateRepository {
+public interface MailTemplateRepository extends JpaRepository<MailTemplateEntity, Long> 
+{
 
 }
