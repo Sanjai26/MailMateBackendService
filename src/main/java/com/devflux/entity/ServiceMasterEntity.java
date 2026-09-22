@@ -12,8 +12,8 @@ public class ServiceMasterEntity {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "user_id",  nullable = false)
-	private Long userId;
+	@Column(name = "client_id", nullable = false)
+	private Long clientId;
 
 	@Column(name = "service_name", nullable = false, length = 255)
 	private String serviceName;
@@ -32,12 +32,12 @@ public class ServiceMasterEntity {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public Long getClientId() {
+		return clientId;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 
 	public String getServiceName() {
@@ -69,8 +69,8 @@ public class ServiceMasterEntity {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ServiceMasterEntity [id=");
 		builder.append(id);
-		builder.append(", userId=");
-		builder.append(userId);
+		builder.append(", clientId=");
+		builder.append(clientId);
 		builder.append(", serviceName=");
 		builder.append(serviceName);
 		builder.append(", description=");

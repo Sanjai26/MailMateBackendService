@@ -6,5 +6,5 @@ import com.devflux.entity.SchedulerTemplateEntity;
 
 public interface SchedulerTemplateRepository extends JpaRepository<SchedulerTemplateEntity, Long> 
 {
-	
+
 }

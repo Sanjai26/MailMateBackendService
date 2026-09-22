@@ -27,7 +27,7 @@ public class MailTemplateEntity
 
 	@ManyToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	private MasterUserEntity	createdBy;
+	private UserEntity	createdBy;
 
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime		createdAt	= LocalDateTime.now();
@@ -82,12 +82,12 @@ public class MailTemplateEntity
 		this.isHtml = isHtml;
 	}
 
-	public MasterUserEntity getCreatedBy()
+	public UserEntity getCreatedBy()
 	{
 		return createdBy;
 	}
 
-	public void setCreatedBy(MasterUserEntity createdBy)
+	public void setCreatedBy(UserEntity createdBy)
 	{
 		this.createdBy = createdBy;
 	}

@@ -3,8 +3,8 @@ package com.devflux.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "scheduler_user_mapping")
-public class SchedulerUserMapping {
+@Table(name = "scheduler_client_mapping")
+public class SchedulerClientMapping {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +12,8 @@ public class SchedulerUserMapping {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-	private UserEntity userId;
+	@JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
+	private ClientEntity client;
 
 	@ManyToOne
 	@JoinColumn(name = "scheduler_id", referencedColumnName = "id")
@@ -46,10 +46,10 @@ public class SchedulerUserMapping {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SchedulerUserMapping [id=");
+		builder.append("SchedulerClientMapping [id=");
 		builder.append(id);
-		builder.append(", userId=");
-		builder.append(userId);
+		builder.append(", client=");
+		builder.append(client);
 		builder.append(", schedulerReport=");
 		builder.append(schedulerReport);
 		builder.append("]");

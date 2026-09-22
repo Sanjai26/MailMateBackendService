@@ -22,13 +22,6 @@ public class UserService
 			boolean isActive)
 	{
 		UserEntity userEntity = new UserEntity();
-		userEntity.setFirstName(firstName);
-		userEntity.setLastName(lastName);
-		userEntity.setMailAddress(mailAddress);
-		userEntity.setPhoneNumber(phoneNumber);
-		userEntity.setCountry(country);
-		userEntity.setCreatedAt(LocalDateTime.now());
-		userEntity.setActive(isActive);
 		return userRepository.save(userEntity);
 	}
 
@@ -39,33 +32,13 @@ public class UserService
 
 	public UserEntity getUserById(long id)
 	{
-		return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+		return userRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 	}
 
-	public List<UserEntity> findByCountry(String country)
+	public UserEntity createUser(UserEntity user)
 	{
-		return userRepository.findByCountry(country);
-	}
-
-	public UserEntity modifyUser(long id, String firstName, String lastName, String mailAddress, String phoneNumber,
-			String country, boolean isActive)
-	{
-		UserEntity userEntity = getUserById(id);
-		userEntity.setFirstName(firstName);
-		userEntity.setLastName(lastName);
-		userEntity.setMailAddress(mailAddress);
-		userEntity.setPhoneNumber(phoneNumber);
-		userEntity.setCountry(country);
-		userEntity.setActive(isActive);
-		return userRepository.save(userEntity);
-	}
-
-	public void deleteUserById(long id)
-	{
-		if (!userRepository.existsById(id))
-		{
-			throw new RuntimeException("User not found with id: " + id);
-		}
-		userRepository.deleteById(id);
+		user.setLastUpdatedAt(LocalDateTime.now().toString());
+		return userRepository.save(user);
 	}
 }

@@ -30,7 +30,7 @@ public class SchedulerMailEntity
 
 	@ManyToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	private MasterUserEntity		createdBy;
+	private UserEntity		createdBy;
 
 	@Column(name = "last_run")
 	private LocalDateTime			lastRun;
@@ -74,12 +74,12 @@ public class SchedulerMailEntity
 		this.mailTemplate = mailTemplate;
 	}
 
-	public MasterUserEntity getCreatedBy()
+	public UserEntity getCreatedBy()
 	{
 		return createdBy;
 	}
 
-	public void setCreatedBy(MasterUserEntity createdBy)
+	public void setCreatedBy(UserEntity createdBy)
 	{
 		this.createdBy = createdBy;
 	}

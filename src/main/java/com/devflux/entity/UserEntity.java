@@ -1,6 +1,6 @@
-
 package com.devflux.entity;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,116 +8,91 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "mailAddress_unique", columnNames = "mailAddress"))
-public class UserEntity {
-
+@Table(name = "users")
+public class UserEntity
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long	id;
 
-	private String firstName;
+	@Column(name = "username", nullable = false, length = 100)
+	private String	username;
 
-	private String lastName;
+	@Column(name = "email", nullable = false, length = 100)
+	private String	email;
 
-	@Column(unique = true, nullable = false)
-	private String mailAddress;
+	@Column(name = "password", nullable = false, length = 255)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String	password;
 
-	private String phoneNumber;
+	@Column(name = "lastUpdatedAt", length = 100)
+	private String	lastUpdatedAt;
 
-	private String country;
-
-	private LocalDateTime createdAt;
-
-	private boolean isActive;
-
-	public long getId() {
+	public Long getId()
+	{
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id)
+	{
 		this.id = id;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getUsername()
+	{
+		return username;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setUsername(String username)
+	{
+		this.username = username;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getEmail()
+	{
+		return email;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setEmail(String email)
+	{
+		this.email = email;
 	}
 
-	public String getMailAddress() {
-		return mailAddress;
+	public String getPassword()
+	{
+		return password;
 	}
 
-	public void setMailAddress(String mailAddress) {
-		this.mailAddress = mailAddress;
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getLastUpdatedAt()
+	{
+		return lastUpdatedAt;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setLastUpdatedAt(String lastUpdatedAt)
+	{
+		this.lastUpdatedAt = lastUpdatedAt;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("UserEntity [id=");
 		builder.append(id);
-		builder.append(", firstName=");
-		builder.append(firstName);
-		builder.append(", lastName=");
-		builder.append(lastName);
-		builder.append(", mailAddress=");
-		builder.append(mailAddress);
-		builder.append(", phoneNumber=");
-		builder.append(phoneNumber);
-		builder.append(", country=");
-		builder.append(country);
-		builder.append(", createdAt=");
-		builder.append(createdAt);
-		builder.append(", isActive=");
-		builder.append(isActive);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", lastUpdatedAt=");
+		builder.append(lastUpdatedAt);
 		builder.append("]");
 		return builder.toString();
 	}
-
 }
