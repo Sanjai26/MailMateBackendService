@@ -4,47 +4,55 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "scheduler_client_mapping")
-public class SchedulerClientMapping {
+public class SchedulerClientMapping
+{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private Long				id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
-	private ClientEntity client;
+	private CustomerEntity		client;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "scheduler_id", referencedColumnName = "id")
-	private SchedulerMailEntity schedulerReport;
+	private SchedulerMailEntity	schedulerReport;
 
-	public Long getId() {
+	public Long getId()
+	{
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Long id)
+	{
 		this.id = id;
 	}
 
-	public UserEntity getUserId() {
-		return userId;
+	public CustomerEntity getClient()
+	{
+		return client;
 	}
 
-	public void setUserId(UserEntity userId) {
-		this.userId = userId;
+	public void setClient(CustomerEntity client)
+	{
+		this.client = client;
 	}
 
-	public SchedulerMailEntity getSchedulerReport() {
+	public SchedulerMailEntity getSchedulerReport()
+	{
 		return schedulerReport;
 	}
 
-	public void setSchedulerReport(SchedulerMailEntity schedulerReport) {
+	public void setSchedulerReport(SchedulerMailEntity schedulerReport)
+	{
 		this.schedulerReport = schedulerReport;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("SchedulerClientMapping [id=");
 		builder.append(id);

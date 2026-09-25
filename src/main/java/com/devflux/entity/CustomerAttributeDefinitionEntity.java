@@ -15,7 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(
-    name = "client_attribute_definitions",
+    name = "customer_attribute_definitions",
     uniqueConstraints = {
         @UniqueConstraint(
             name = "uk_attribute_number",
@@ -27,17 +27,17 @@ import jakarta.persistence.UniqueConstraint;
         )
     }
 )
-public class ClientAttributeDefinitionEntity {
+public class CustomerAttributeDefinitionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /*
-     * 1 = clients.attribute1
-     * 2 = clients.attribute2
+     * 1 = customers.attribute1
+     * 2 = customers.attribute2
      * ...
-     * 5 = clients.attribute5
+     * 5 = customers.attribute5
      */
     private Integer attributeNumber;
 
@@ -66,7 +66,7 @@ public class ClientAttributeDefinitionEntity {
         orphanRemoval = true,
         fetch = FetchType.LAZY
     )
-    private List<ClientAttributeOptionEntity> options = new ArrayList<>();
+    private List<CustomerAttributeOptionEntity> options = new ArrayList<>();
 
 
     // =========================
@@ -129,11 +129,11 @@ public class ClientAttributeDefinitionEntity {
         this.status = status;
     }
 
-    public List<ClientAttributeOptionEntity> getOptions() {
+    public List<CustomerAttributeOptionEntity> getOptions() {
         return options;
     }
 
-    public void setOptions(List<ClientAttributeOptionEntity> options) {
+    public void setOptions(List<CustomerAttributeOptionEntity> options) {
         this.options = options;
     }
 }

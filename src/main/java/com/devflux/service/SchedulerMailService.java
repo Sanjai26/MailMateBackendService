@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.devflux.entity.MailTemplateEntity;
-import com.devflux.entity.MasterUserEntity;
+import com.devflux.entity.UserEntity;
 import com.devflux.entity.SchedulerMailEntity;
 import com.devflux.entity.SchedulerTemplateEntity;
 import com.devflux.repository.MailTemplateRepository;
-import com.devflux.repository.MasterUserRepository;
+import com.devflux.repository.UserRepository;
 import com.devflux.repository.SchedulerMailRepository;
 import com.devflux.repository.SchedulerTemplateRepository;
 
@@ -20,16 +20,16 @@ public class SchedulerMailService
 	private final SchedulerMailRepository schedulerMailRepository;
 	private final SchedulerTemplateRepository schedulerTemplateRepository;
 	private final MailTemplateRepository mailTemplateRepository;
-	private final MasterUserRepository masterUserRepository;
+	private final UserRepository userRepository;
 
 	public SchedulerMailService(SchedulerMailRepository schedulerMailRepository,
 			SchedulerTemplateRepository schedulerTemplateRepository, MailTemplateRepository mailTemplateRepository,
-			MasterUserRepository masterUserRepository)
+			UserRepository userRepository)
 	{
 		this.schedulerMailRepository = schedulerMailRepository;
 		this.schedulerTemplateRepository = schedulerTemplateRepository;
 		this.mailTemplateRepository = mailTemplateRepository;
-		this.masterUserRepository = masterUserRepository;
+		this.userRepository = userRepository;
 	}
 
 	public SchedulerMailEntity addSchedulerMail(long schedulerTemplateId, long mailTemplateId, long createdById,
@@ -91,9 +91,9 @@ public class SchedulerMailService
 				.orElseThrow(() -> new RuntimeException("Mail template not found with id: " + id));
 	}
 
-	private MasterUserEntity getMasterUser(long id)
+	private UserEntity getMasterUser(long id)
 	{
-		return masterUserRepository.findById(id)
+		return userRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Master user not found with id: " + id));
 	}
 }

@@ -1,12 +1,12 @@
 package com.devflux.dto;
 
-public class ClientAttributeDTO
+public class CustomerAttributeDTO
 {
 	private String	name;
 
 	private String	value;
 
-	public ClientAttributeDTO(String name, String value)
+	public CustomerAttributeDTO(String name, String value)
 	{
 		this.name = name;
 		this.value = value;
@@ -26,7 +26,7 @@ public class ClientAttributeDTO
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("ClientAttributeDTO [name=");
+		builder.append("CustomerAttributeDTO [name=");
 		builder.append(name);
 		builder.append(", value=");
 		builder.append(value);

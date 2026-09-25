@@ -3,7 +3,7 @@ package com.devflux.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ClientDTO
+public class CustomerDTO
 {
 	private long id;
 
@@ -16,7 +16,7 @@ public class ClientDTO
 
 	private LocalDateTime createdAt;
 
-    private List<ClientAttributeDTO> attributes;
+    private List<CustomerAttributeDTO> attributes;
     
     private boolean isActive;
 
@@ -70,12 +70,12 @@ public class ClientDTO
 		this.createdAt = createdAt;
 	}
 
-	public List<ClientAttributeDTO> getAttributes()
+	public List<CustomerAttributeDTO> getAttributes()
 	{
 		return attributes;
 	}
 
-	public void setAttributes(List<ClientAttributeDTO> attributes)
+	public void setAttributes(List<CustomerAttributeDTO> attributes)
 	{
 		this.attributes = attributes;
 	}
@@ -94,7 +94,7 @@ public class ClientDTO
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("ClientDTO [id=");
+		builder.append("CustomerDTO [id=");
 		builder.append(id);
 		builder.append(", firstName=");
 		builder.append(firstName);

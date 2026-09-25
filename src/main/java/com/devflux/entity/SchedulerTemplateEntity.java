@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Table(name = "scheduler_template")
 public class SchedulerTemplateEntity
 {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

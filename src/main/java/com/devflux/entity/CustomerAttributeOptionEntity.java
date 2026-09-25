@@ -12,8 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "client_attribute_options")
-public class ClientAttributeOptionEntity {
+@Table(name = "customer_attribute_options")
+public class CustomerAttributeOptionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class ClientAttributeOptionEntity {
         nullable = false
     )
     @JsonIgnore
-    private ClientAttributeDefinitionEntity attributeDefinition;
+    private CustomerAttributeDefinitionEntity attributeDefinition;
 
     private String optionValue;
 
@@ -54,12 +54,12 @@ public class ClientAttributeOptionEntity {
         this.id = id;
     }
 
-    public ClientAttributeDefinitionEntity getAttributeDefinition() {
+    public CustomerAttributeDefinitionEntity getAttributeDefinition() {
         return attributeDefinition;
     }
 
     public void setAttributeDefinition(
-            ClientAttributeDefinitionEntity attributeDefinition) {
+            CustomerAttributeDefinitionEntity attributeDefinition) {
         this.attributeDefinition = attributeDefinition;
     }
 

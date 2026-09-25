@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Table(name = "scheduler_mail")
 public class SchedulerMailEntity
 {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

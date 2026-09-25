@@ -19,7 +19,7 @@ import com.devflux.entity.UserEntity;
 import com.devflux.security.JWTUtils;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController
 {
 	@Autowired

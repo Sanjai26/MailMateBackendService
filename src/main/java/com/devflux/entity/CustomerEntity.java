@@ -1,5 +1,6 @@
 
 package com.devflux.entity;
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -11,99 +12,110 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "clients", uniqueConstraints = @UniqueConstraint(name = "mailAddress_unique", columnNames = "mailAddress"))
-public class ClientEntity {
-
+@Table(name = "customers", uniqueConstraints = @UniqueConstraint(name = "mailAddress_unique", columnNames = "mailAddress"))
+public class CustomerEntity
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long			id;
 
-	private String firstName;
+	private String			firstName;
 
-	private String lastName;
+	private String			lastName;
 
 	@Column(unique = true, nullable = false)
-	private String mailAddress;
+	private String			mailAddress;
 
-	private String phoneNumber;
+	private String			phoneNumber;
 
-	private LocalDateTime createdAt;
+	private LocalDateTime	createdAt;
 
-	private boolean isActive;
-	
-	 @Column(length = 500)
-    private String attribute1;
+	private boolean			isActive;
 
-    @Column(length = 500)
-    private String attribute2;
+	@Column(length = 500)
+	private String			attribute1;
 
-    @Column(length = 500)
-    private String attribute3;
+	@Column(length = 500)
+	private String			attribute2;
 
-    @Column(length = 500)
-    private String attribute4;
+	@Column(length = 500)
+	private String			attribute3;
 
-    @Column(length = 500)
-    private String attribute5;
+	@Column(length = 500)
+	private String			attribute4;
 
-    
-	public long getId() {
+	@Column(length = 500)
+	private String			attribute5;
+
+	public long getId()
+	{
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(long id)
+	{
 		this.id = id;
 	}
 
-	public String getFirstName() {
+	public String getFirstName()
+	{
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName)
+	{
 		this.firstName = firstName;
 	}
 
-	public String getLastName() {
+	public String getLastName()
+	{
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(String lastName)
+	{
 		this.lastName = lastName;
 	}
 
-	public String getMailAddress() {
+	public String getMailAddress()
+	{
 		return mailAddress;
 	}
 
-	public void setMailAddress(String mailAddress) {
+	public void setMailAddress(String mailAddress)
+	{
 		this.mailAddress = mailAddress;
 	}
 
-	public String getPhoneNumber() {
+	public String getPhoneNumber()
+	{
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(String phoneNumber)
+	{
 		this.phoneNumber = phoneNumber;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt()
+	{
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt)
+	{
 		this.createdAt = createdAt;
 	}
 
-	public boolean isActive() {
+	public boolean isActive()
+	{
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setActive(boolean isActive)
+	{
 		this.isActive = isActive;
 	}
-	
-	
 
 	public String getAttribute1()
 	{
@@ -159,7 +171,7 @@ public class ClientEntity {
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("ClientEntity [id=");
+		builder.append("CustomerEntity [id=");
 		builder.append(id);
 		builder.append(", firstName=");
 		builder.append(firstName);

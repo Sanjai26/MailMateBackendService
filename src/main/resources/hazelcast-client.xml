@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<hazelcast-client
+    xmlns="http://www.hazelcast.com/schema/client-config">
+
+    <cluster-name>dev</cluster-name>
+    <network>
+
+        <cluster-members>
+            <address>127.0.0.1:5701</address>
+            <address>127.0.0.1:5702</address>
+            <address>127.0.0.1:5703</address>
+            <address>127.0.0.1:5704</address>
+            <address>127.0.0.1:5705</address>
+        </cluster-members>
+
+        <!-- Client connects directly to the cluster members -->
+        <smart-routing>true</smart-routing>
+
+        <!-- Retry configuration -->
+        <redo-operation>true</redo-operation>
+
+        <connection-timeout-millis>5000</connection-timeout-millis>
+
+        <connection-attempt-period>3000</connection-attempt-period>
+
+        <connection-attempt-limit>5</connection-attempt-limit>
+
+    </network>
+
+    <serialization>
+
+        <portable-version>0</portable-version>
+
+        <check-class-definitions>true</check-class-definitions>
+
+    </serialization>
+
+    <near-cache name="mail-templates">
+
+        <in-memory-format>BINARY</in-memory-format>
+
+        <invalidate-on-change>true</invalidate-on-change>
+
+        <time-to-live-seconds>300</time-to-live-seconds>
+
+        <max-idle-seconds>0</max-idle-seconds>
+
+        <eviction eviction-policy="LRU"
+                  size="1000"
+                  max-size-policy="ENTRY_COUNT"/>
+
+    </near-cache>
+
+
+    <connection-strategy>
+
+        <async-start>false</async-start>
+
+        <reconnect-mode>ON</reconnect-mode>
+
+    </connection-strategy>
+
+
+</hazelcast-client>

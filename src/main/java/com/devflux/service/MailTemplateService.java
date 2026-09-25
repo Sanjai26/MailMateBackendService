@@ -3,38 +3,43 @@ package com.devflux.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devflux.entity.MailTemplateEntity;
-import com.devflux.entity.MasterUserEntity;
+import com.devflux.entity.UserEntity;
 import com.devflux.repository.MailTemplateRepository;
-import com.devflux.repository.MasterUserRepository;
+import com.devflux.repository.UserRepository;
 
 @Service
 public class MailTemplateService
 {
-	private final MailTemplateRepository mailTemplateRepository;
-	private final MasterUserRepository masterUserRepository;
+	@Autowired
+	private MailTemplateRepository	mailTemplateRepository;
 
-	public MailTemplateService(MailTemplateRepository mailTemplateRepository, MasterUserRepository masterUserRepository)
+	@Autowired
+	private UserRepository			userRepository;
+
+
+	public MailTemplateEntity addMailTemplate(String templateName, String subject, String body, Boolean isHtml, long createdById)
 	{
-		this.mailTemplateRepository = mailTemplateRepository;
-		this.masterUserRepository = masterUserRepository;
-	}
-
-	public MailTemplateEntity addMailTemplate(String templateName, String subject, String body, Boolean isHtml,
-			long createdById)
-	{
-		MasterUserEntity createdBy = masterUserRepository.findById(createdById)
-				.orElseThrow(() -> new RuntimeException("Master user not found with id: " + createdById));
-
 		MailTemplateEntity mailTemplate = new MailTemplateEntity();
-		mailTemplate.setTemplateName(templateName);
-		mailTemplate.setSubject(subject);
-		mailTemplate.setBody(body);
-		mailTemplate.setIsHtml(isHtml);
-		mailTemplate.setCreatedBy(createdBy);
-		mailTemplate.setCreatedAt(LocalDateTime.now());
+		try
+		{
+			UserEntity createdBy = userRepository.findById(createdById).orElseThrow(() -> new RuntimeException("Master user not found with id: " + createdById));
+
+			mailTemplate.setTemplateName(templateName);
+			mailTemplate.setSubject(subject);
+			mailTemplate.setBody(body);
+			mailTemplate.setIsHtml(isHtml);
+			mailTemplate.setCreatedBy(createdBy);
+			mailTemplate.setCreatedAt(LocalDateTime.now());
+		}
+		catch (RuntimeException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return mailTemplateRepository.save(mailTemplate);
 	}
 
@@ -45,16 +50,13 @@ public class MailTemplateService
 
 	public MailTemplateEntity getMailTemplateById(long id)
 	{
-		return mailTemplateRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Mail template not found with id: " + id));
+		return mailTemplateRepository.findById(id).orElseThrow(() -> new RuntimeException("Mail template not found with id: " + id));
 	}
 
-	public MailTemplateEntity modifyMailTemplate(long id, String templateName, String subject, String body,
-			Boolean isHtml, long createdById)
+	public MailTemplateEntity modifyMailTemplate(long id, String templateName, String subject, String body, Boolean isHtml, long createdById)
 	{
 		MailTemplateEntity mailTemplate = getMailTemplateById(id);
-		MasterUserEntity createdBy = masterUserRepository.findById(createdById)
-				.orElseThrow(() -> new RuntimeException("Master user not found with id: " + createdById));
+		UserEntity createdBy = userRepository.findById(createdById).orElseThrow(() -> new RuntimeException("Master user not found with id: " + createdById));
 
 		mailTemplate.setTemplateName(templateName);
 		mailTemplate.setSubject(subject);
