@@ -1,15 +1,18 @@
 package com.devflux.encryption;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 public class EncryptionUtil
 {
 
+	private static final org.slf4j.Logger OUT = org.slf4j.LoggerFactory.getLogger(EncryptionUtil.class);
+	
 	private static final String ALGORITHM = "AES/GCM/NoPadding";
 
 	private static final byte[]	SECRET_KEY	= "aGWD8Au8oLVsijPHAVWo1LxrWfZ24cze".getBytes(StandardCharsets.UTF_8);
@@ -24,53 +27,69 @@ public class EncryptionUtil
 		// Generate random IV
 		byte[] iv = new byte[IV_LENGTH];
 
-		SecureRandom secureRandom = new SecureRandom();
-		secureRandom.nextBytes(iv);
-
-		SecretKeySpec key = new SecretKeySpec(SECRET_KEY, "AES");
-
-		Cipher cipher = Cipher.getInstance(ALGORITHM);
-
-		GCMParameterSpec parameterSpec = new GCMParameterSpec(TAG_LENGTH, iv);
-
-		cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
-
-		byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
-
 		// Combine IV + encrypted data
-		byte[] result = new byte[IV_LENGTH + encrypted.length];
+		byte[] result = null;
+		try
+		{
+			SecureRandom secureRandom = new SecureRandom();
+			secureRandom.nextBytes(iv);
 
-		System.arraycopy(iv, 0, result, 0, IV_LENGTH);
+			SecretKeySpec key = new SecretKeySpec(SECRET_KEY, "AES");
 
-		System.arraycopy(encrypted, 0, result, IV_LENGTH, encrypted.length);
+			Cipher cipher = Cipher.getInstance(ALGORITHM);
+
+			GCMParameterSpec parameterSpec = new GCMParameterSpec(TAG_LENGTH, iv);
+
+			cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
+
+			byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
+
+			result = new byte[IV_LENGTH + encrypted.length];
+
+			System.arraycopy(iv, 0, result, 0, IV_LENGTH);
+
+			System.arraycopy(encrypted, 0, result, IV_LENGTH, encrypted.length);
+		}
+		catch (Exception e)
+		{
+			OUT.error("Error while encrypting: " + e.getMessage());
+		}
 
 		return Base64.getEncoder().encodeToString(result);
 	}
 
-	public static String decrypt(String encryptedText) throws Exception
+	public static String decrypt(String encryptedText)
 	{
 
-		byte[] combined = Base64.getDecoder().decode(encryptedText);
+		byte[] decrypted = null;
+		try
+		{
+			byte[] combined = Base64.getDecoder().decode(encryptedText);
 
-		// Extract IV
-		byte[] iv = new byte[IV_LENGTH];
+			// Extract IV
+			byte[] iv = new byte[IV_LENGTH];
 
-		System.arraycopy(combined, 0, iv, 0, IV_LENGTH);
+			System.arraycopy(combined, 0, iv, 0, IV_LENGTH);
 
-		// Extract encrypted data
-		byte[] encrypted = new byte[combined.length - IV_LENGTH];
+			// Extract encrypted data
+			byte[] encrypted = new byte[combined.length - IV_LENGTH];
 
-		System.arraycopy(combined, IV_LENGTH, encrypted, 0, encrypted.length);
+			System.arraycopy(combined, IV_LENGTH, encrypted, 0, encrypted.length);
 
-		SecretKeySpec key = new SecretKeySpec(SECRET_KEY, "AES");
+			SecretKeySpec key = new SecretKeySpec(SECRET_KEY, "AES");
 
-		Cipher cipher = Cipher.getInstance(ALGORITHM);
+			Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-		GCMParameterSpec parameterSpec = new GCMParameterSpec(TAG_LENGTH, iv);
+			GCMParameterSpec parameterSpec = new GCMParameterSpec(TAG_LENGTH, iv);
 
-		cipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
+			cipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
 
-		byte[] decrypted = cipher.doFinal(encrypted);
+			decrypted = cipher.doFinal(encrypted);
+		}
+		catch (Exception e)
+		{
+			OUT.error("Error while decrypting: " + e.getMessage());
+		}
 
 		return new String(decrypted, StandardCharsets.UTF_8);
 	}

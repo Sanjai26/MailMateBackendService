@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.devflux.entity.SchedulerMailEntity;
 
+
 @Repository
 public interface SchedulerMailRepository extends JpaRepository<SchedulerMailEntity, Long>
 {

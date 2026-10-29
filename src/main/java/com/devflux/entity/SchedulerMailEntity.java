@@ -1,15 +1,19 @@
 package com.devflux.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+/**
+ * 
+ */
 @Entity
 @Table(name = "scheduler_mail")
 public class SchedulerMailEntity
@@ -29,19 +33,32 @@ public class SchedulerMailEntity
 
 	@ManyToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	private UserEntity		createdBy;
-
-	@Column(name = "last_run")
-	private LocalDateTime			lastRun;
-
-	@Column(name = "next_run")
-	private LocalDateTime			nextRun;
+	private UserEntity				createdBy;
 
 	@Column(name = "created_at", nullable = false)
-	private LocalDateTime			createdAt	= LocalDateTime.now();
+	private LocalDateTime			createdAt		= LocalDateTime.now();
 
 	@Column(name = "is_active", nullable = false)
-	private boolean					isAtive;
+	private boolean					isActive;
+
+	@Column(name = "last_updated_at", nullable = false)
+	private LocalDateTime			lastUpdatedAt	= LocalDateTime.now();
+
+	@Column(name = "status", nullable = false)
+	private String					status;
+
+	@Column(name = "message")
+	private String					message;
+
+	public LocalDateTime getLastUpdatedAt()
+	{
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt)
+	{
+		this.lastUpdatedAt = lastUpdatedAt;
+	}
 
 	public Long getId()
 	{
@@ -83,26 +100,6 @@ public class SchedulerMailEntity
 		this.createdBy = createdBy;
 	}
 
-	public LocalDateTime getLastRun()
-	{
-		return lastRun;
-	}
-
-	public void setLastRun(LocalDateTime lastRun)
-	{
-		this.lastRun = lastRun;
-	}
-
-	public LocalDateTime getNextRun()
-	{
-		return nextRun;
-	}
-
-	public void setNextRun(LocalDateTime nextRun)
-	{
-		this.nextRun = nextRun;
-	}
-
 	public LocalDateTime getCreatedAt()
 	{
 		return createdAt;
@@ -113,21 +110,41 @@ public class SchedulerMailEntity
 		this.createdAt = createdAt;
 	}
 
-	public boolean isAtive()
+	public boolean isActive()
 	{
-		return isAtive;
+		return isActive;
 	}
 
-	public void setAtive(boolean isAtive)
+	public void setActive(boolean isAtive)
 	{
-		this.isAtive = isAtive;
+		this.isActive = isAtive;
+	}
+
+	public String getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(String status)
+	{
+		this.status = status;
+	}
+
+	public String getMessage()
+	{
+		return message;
+	}
+
+	public void setMessage(String message)
+	{
+		this.message = message;
 	}
 
 	@Override
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("SchedulerReport [id=");
+		builder.append("SchedulerMailEntity [id=");
 		builder.append(id);
 		builder.append(", schedulerTemplate=");
 		builder.append(schedulerTemplate);
@@ -135,14 +152,16 @@ public class SchedulerMailEntity
 		builder.append(mailTemplate);
 		builder.append(", createdBy=");
 		builder.append(createdBy);
-		builder.append(", lastRun=");
-		builder.append(lastRun);
-		builder.append(", nextRun=");
-		builder.append(nextRun);
 		builder.append(", createdAt=");
 		builder.append(createdAt);
-		builder.append(", isAtive=");
-		builder.append(isAtive);
+		builder.append(", isActive=");
+		builder.append(isActive);
+		builder.append(", lastUpdatedAt=");
+		builder.append(lastUpdatedAt);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", message=");
+		builder.append(message);
 		builder.append("]");
 		return builder.toString();
 	}

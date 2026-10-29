@@ -2,7 +2,6 @@ package com.devflux.configuration;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,8 +24,11 @@ import com.devflux.service.CustomUserDetailsService;
 @Configuration
 public class SecurityConfig
 {
-	@Autowired
-	private JWTFilter filter;
+	private final JWTFilter filter;
+
+	SecurityConfig(JWTFilter filter) {
+		this.filter = filter;
+	}
 	// @Bean
 	// public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
 	// Exception {
@@ -38,7 +39,7 @@ public class SecurityConfig
 	// // User registration does not require authentication
 	// .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
 	//
-	// // User and client APIs require authentication
+	// // User and Customer APIs require authentication
 	// .requestMatchers("/api/users/**", "/api/customers/**").authenticated()
 	//
 	// // Root URL does not require authentication
@@ -63,49 +64,42 @@ public class SecurityConfig
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
 	{
-		http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
+		http
+				// CORS
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+				// JWT API - CSRF disabled
 				.csrf(csrf -> csrf.disable())
 
+				// No form login
 				.formLogin(form -> form.disable())
 
+				// No HTTP Basic
 				.httpBasic(basic -> basic.disable())
 
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				// Disable Spring Security's default login page
-				.formLogin(form -> form.disable())
-
-				// Disable HTTP Basic authentication
-				.httpBasic(basic -> basic.disable())
-
-				// Disable CSRF for stateless JWT API
-				.csrf(csrf -> csrf.disable())
-
-				// JWT authentication should be stateless
+				// Stateless JWT authentication
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+				// Authorization
 				.authorizeHttpRequests(authz -> authz
 
-						// Login API - no JWT required
+						// Login does not require JWT
 						.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 
-						// User registration - no JWT required
+						// Registration does not require JWT
 						.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
 
-						// Authentication check - no?
-						// IMPORTANT: if /me validates JWT, don't permit it.
-						.requestMatchers("/api/auth/me").authenticated()
+						// /me DOES require JWT
+						.requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
 
 						// Protected APIs
 						.requestMatchers("/api/users/**", "/api/customers/**").authenticated()
 
-						// Root URL
-						.requestMatchers("/").permitAll()
-
 						// Everything else
 						.anyRequest().permitAll())
 
-				// Your JWT filter
+				// JWT filter
 				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
@@ -126,15 +120,9 @@ public class SecurityConfig
 	// }
 
 	@Bean
-	public UserDetailsService userDetailService()
+	public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService customUserDetailsService)
 	{
-		return new CustomUserDetailsService();
-	}
-
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider()
-	{
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userDetailService());
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(customUserDetailsService);
 		authenticationProvider.setPasswordEncoder(getPasswordEncoder());
 
 		return authenticationProvider;
@@ -147,9 +135,9 @@ public class SecurityConfig
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager()
+	public AuthenticationManager authenticationManager(DaoAuthenticationProvider authenticationProvider)
 	{
-		return new ProviderManager(List.of(authenticationProvider()));
+		return new ProviderManager(authenticationProvider);
 	}
 
 	@Bean
@@ -160,7 +148,7 @@ public class SecurityConfig
 
 		configuration.setAllowedOrigins(List.of("http://localhost:5173"));
 
-		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 
 		configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 

@@ -2,24 +2,39 @@ package com.devflux.dto;
 
 import java.time.LocalDateTime;
 
-public class SchedulerMailDTO {
+import com.devflux.entity.MailTemplateEntity;
+import com.devflux.entity.SchedulerTemplateEntity;
+import com.devflux.entity.UserEntity;
 
-    private Long id;
+public class SchedulerMailDTO
+{
+	private Long					id;
 
-    private Long schedulerTemplateId;
+	private SchedulerTemplateEntity	schedulerTemplate;
 
-    private Long mailTemplateId;
+	private MailTemplateEntity		mailTemplate;
 
-    private Long createdById;
+	private UserEntity				createdBy;
 
-    private LocalDateTime lastRun;
+	private LocalDateTime			createdAt		= LocalDateTime.now();
 
-    private LocalDateTime nextRun;
+	private boolean					isActive;
 
-    private LocalDateTime createdAt;
+	private LocalDateTime			lastUpdatedAt	= LocalDateTime.now();
 
-    private boolean active;
-    
+	private String					status;
+	
+	private String					message;
+
+	public LocalDateTime getLastUpdatedAt()
+	{
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt)
+	{
+		this.lastUpdatedAt = lastUpdatedAt;
+	}
 
 	public Long getId()
 	{
@@ -31,54 +46,34 @@ public class SchedulerMailDTO {
 		this.id = id;
 	}
 
-	public Long getSchedulerTemplateId()
+	public SchedulerTemplateEntity getSchedulerTemplate()
 	{
-		return schedulerTemplateId;
+		return schedulerTemplate;
 	}
 
-	public void setSchedulerTemplateId(Long schedulerTemplateId)
+	public void setSchedulerTemplate(SchedulerTemplateEntity schedulerTemplate)
 	{
-		this.schedulerTemplateId = schedulerTemplateId;
+		this.schedulerTemplate = schedulerTemplate;
 	}
 
-	public Long getMailTemplateId()
+	public MailTemplateEntity getMailTemplate()
 	{
-		return mailTemplateId;
+		return mailTemplate;
 	}
 
-	public void setMailTemplateId(Long mailTemplateId)
+	public void setMailTemplate(MailTemplateEntity mailTemplate)
 	{
-		this.mailTemplateId = mailTemplateId;
+		this.mailTemplate = mailTemplate;
 	}
 
-	public Long getCreatedById()
+	public UserEntity getCreatedBy()
 	{
-		return createdById;
+		return createdBy;
 	}
 
-	public void setCreatedById(Long createdById)
+	public void setCreatedBy(UserEntity createdBy)
 	{
-		this.createdById = createdById;
-	}
-
-	public LocalDateTime getLastRun()
-	{
-		return lastRun;
-	}
-
-	public void setLastRun(LocalDateTime lastRun)
-	{
-		this.lastRun = lastRun;
-	}
-
-	public LocalDateTime getNextRun()
-	{
-		return nextRun;
-	}
-
-	public void setNextRun(LocalDateTime nextRun)
-	{
-		this.nextRun = nextRun;
+		this.createdBy = createdBy;
 	}
 
 	public LocalDateTime getCreatedAt()
@@ -93,36 +88,55 @@ public class SchedulerMailDTO {
 
 	public boolean isActive()
 	{
-		return active;
+		return isActive;
 	}
 
-	public void setActive(boolean active)
+	public void setActive(boolean isAtive)
 	{
-		this.active = active;
+		this.isActive = isAtive;
+	}
+
+	public String getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(String status)
+	{
+		this.status = status;
+	}
+	
+	public String getMessage()
+	{
+		return message;
 	}
 
 	@Override
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("SchedulerMailCache [id=");
+		builder.append("SchedulerMailDTO [id=");
 		builder.append(id);
-		builder.append(", schedulerTemplateId=");
-		builder.append(schedulerTemplateId);
-		builder.append(", mailTemplateId=");
-		builder.append(mailTemplateId);
-		builder.append(", createdById=");
-		builder.append(createdById);
-		builder.append(", lastRun=");
-		builder.append(lastRun);
-		builder.append(", nextRun=");
-		builder.append(nextRun);
+		builder.append(", schedulerTemplate=");
+		builder.append(schedulerTemplate);
+		builder.append(", mailTemplate=");
+		builder.append(mailTemplate);
+		builder.append(", createdBy=");
+		builder.append(createdBy);
 		builder.append(", createdAt=");
 		builder.append(createdAt);
-		builder.append(", active=");
-		builder.append(active);
+		builder.append(", isActive=");
+		builder.append(isActive);
+		builder.append(", lastUpdatedAt=");
+		builder.append(lastUpdatedAt);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", message=");
+		builder.append(message);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 
 }

@@ -1,7 +1,15 @@
 package com.devflux.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "mail_template")
@@ -11,26 +19,39 @@ public class MailTemplateEntity
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long				id;
+	private Long			id;
 
 	@Column(name = "template_name", nullable = false, length = 100)
-	private String				templateName;
+	private String			templateName;
 
 	@Column(name = "subject", nullable = false, length = 200)
-	private String				subject;
+	private String			subject;
 
 	@Column(name = "body", nullable = false, columnDefinition = "TEXT")
-	private String				body;
+	private String			body;
 
 	@Column(name = "is_html", nullable = false)
-	private Boolean				isHtml		= true;
+	private Boolean			isHtml			= true;
 
 	@ManyToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	private UserEntity	createdBy;
+	private UserEntity		createdBy;
 
 	@Column(name = "created_at", nullable = false)
-	private LocalDateTime		createdAt	= LocalDateTime.now();
+	private LocalDateTime	createdAt		= LocalDateTime.now();
+
+	@Column(name = "last_updated_at", nullable = false)
+	private LocalDateTime	lastUpdatedAt	= LocalDateTime.now();
+	
+	public LocalDateTime getLastUpdatedAt()
+	{
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt)
+	{
+		this.lastUpdatedAt = lastUpdatedAt;
+	}
 
 	public Long getId()
 	{
@@ -106,7 +127,7 @@ public class MailTemplateEntity
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("MailTemplate [id=");
+		builder.append("MailTemplateEntity [id=");
 		builder.append(id);
 		builder.append(", templateName=");
 		builder.append(templateName);
@@ -120,6 +141,8 @@ public class MailTemplateEntity
 		builder.append(createdBy);
 		builder.append(", createdAt=");
 		builder.append(createdAt);
+		builder.append(", lastUpdatedAt=");
+		builder.append(lastUpdatedAt);
 		builder.append("]");
 		return builder.toString();
 	}

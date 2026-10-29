@@ -1,7 +1,13 @@
 package com.devflux.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "service_master")
@@ -12,8 +18,8 @@ public class ServiceMasterEntity {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "client_id", nullable = false)
-	private Long clientId;
+	@Column(name = "Customer_id", nullable = false)
+	private Long CustomerId;
 
 	@Column(name = "service_name", nullable = false, length = 255)
 	private String serviceName;
@@ -32,12 +38,12 @@ public class ServiceMasterEntity {
 		this.id = id;
 	}
 
-	public Long getClientId() {
-		return clientId;
+	public Long getCustomerId() {
+		return CustomerId;
 	}
 
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
+	public void setCustomerId(Long CustomerId) {
+		this.CustomerId = CustomerId;
 	}
 
 	public String getServiceName() {
@@ -69,8 +75,8 @@ public class ServiceMasterEntity {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ServiceMasterEntity [id=");
 		builder.append(id);
-		builder.append(", clientId=");
-		builder.append(clientId);
+		builder.append(", CustomerId=");
+		builder.append(CustomerId);
 		builder.append(", serviceName=");
 		builder.append(serviceName);
 		builder.append(", description=");

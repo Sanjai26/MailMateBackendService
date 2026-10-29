@@ -2,7 +2,6 @@ package com.devflux.hazelcast.cachemanager;
 
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.devflux.entity.CustomerEntity;
@@ -13,12 +12,16 @@ import com.hazelcast.map.IMap;
 @Component
 public class CustomerCacheManager
 {
-	@Autowired
 	private HazelcastInstance hazelcastInstance;
+	
+	CustomerCacheManager( HazelcastInstance hazelcastInstance)
+	{
+		this.hazelcastInstance = hazelcastInstance;
+	}
 
 	private IMap<Long, CustomerEntity> getMap()
 	{
-		return hazelcastInstance.getMap(CacheEnum.CLIENT.getValue());
+		return hazelcastInstance.getMap(CacheEnum.Customer.getValue());
 	}
 
 	// CREATE

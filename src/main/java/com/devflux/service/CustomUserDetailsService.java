@@ -16,8 +16,12 @@ import com.devflux.repository.UserRepository;
 @Component
 public class CustomUserDetailsService  implements UserDetailsService
 {
-	@Autowired
 	private UserRepository userRepository;
+	
+	CustomUserDetailsService(@Autowired UserRepository userRepository)
+	{
+		this.userRepository = userRepository;
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException

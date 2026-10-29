@@ -21,7 +21,7 @@ public class ServiceMasterService
 	public ServiceMasterEntity addServiceMaster(long userId, String serviceName, String description)
 	{
 		ServiceMasterEntity serviceMaster = new ServiceMasterEntity();
-		serviceMaster.setClientId(userId);
+		serviceMaster.setCustomerId(userId);
 		serviceMaster.setServiceName(serviceName);
 		serviceMaster.setDescription(description);
 		serviceMaster.setCreatedAt(LocalDateTime.now());
@@ -42,7 +42,7 @@ public class ServiceMasterService
 	public ServiceMasterEntity modifyServiceMaster(long id, long userId, String serviceName, String description)
 	{
 		ServiceMasterEntity serviceMaster = getServiceMasterById(id);
-		serviceMaster.setClientId(userId);
+		serviceMaster.setCustomerId(userId);
 		serviceMaster.setServiceName(serviceName);
 		serviceMaster.setDescription(description);
 		return serviceMasterRepository.save(serviceMaster);

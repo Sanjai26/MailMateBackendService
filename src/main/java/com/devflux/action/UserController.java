@@ -1,6 +1,5 @@
 package com.devflux.action;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +15,14 @@ import com.devflux.service.UserService;
 @RequestMapping("/api/users")
 public class UserController
 {
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
-	@Autowired
-	private  PasswordEncoder encoder;
+	private final  PasswordEncoder encoder;
+
+	UserController(UserService userService, PasswordEncoder encoder) {
+		this.userService = userService;
+		this.encoder = encoder;
+	}
 
 	@GetMapping("/{id}")
 	public UserEntity getUserById(@PathVariable long id)

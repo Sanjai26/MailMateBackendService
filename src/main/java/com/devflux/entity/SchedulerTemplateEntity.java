@@ -1,7 +1,16 @@
 package com.devflux.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "scheduler_template")
@@ -10,26 +19,42 @@ public class SchedulerTemplateEntity
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long			id;
+	private Long					id;
 
 	@Column(name = "schedule_name", nullable = false, length = 100)
-	private String			scheduleName;
+	private String					scheduleName;
 
+	// DAILY, WEEKLY, MONTHLY
 	@Column(name = "frequency", nullable = false, length = 100)
-	private String			frequency;							// e.g.,// "Daily",// "Weekly",// "Monthly"
+	private String					frequency;
 
-	@Column(name = "scheduleDate", length = 100)
-	private String			scheduleDate;		
-	// Type: Daily/Weekly/Monthly
-	// Date:
-	// Time:
-	// Date and time in string format // daily -> 10:30// Weekly -> Monday 10:30// Monthly - > 1st 10:30
+	// Example: 10:30:00
+	@Column(name = "schedule_time")
+	private LocalTime				scheduleTime;
+
+	// Example: MONDAY, WEDNESDAY, SUNDAY
+	// Used for WEEKLY schedules
+	@Column(name = "day_of_week", length = 10)
+	private String					dayOfWeek;
+
+	// Example: 1, 5, 15, 28
+	// Used for MONTHLY schedules
+	@Column(name = "day_of_month")
+	private Integer					dayOfMonth;
 
 	@Column(name = "is_active", nullable = false)
-	private Boolean			isActive	= true;
+	private Boolean					isActive		= true;
 
-	@Column(name = "created_at", nullable = false)
-	private LocalDateTime	createdAt	= LocalDateTime.now();
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime			createdAt		= LocalDateTime.now();
+
+	// Keeping your existing database column spelling
+	@Column(name = "last_upadted_at", nullable = false)
+	private LocalDateTime			lastUpdatedAt	= LocalDateTime.now();
+
+	@ManyToOne
+	@JoinColumn(name = "time_zone_id", nullable = false)
+	private CustomerTimeZoneEntity	timeZone;
 
 	public Long getId()
 	{
@@ -61,14 +86,34 @@ public class SchedulerTemplateEntity
 		this.frequency = frequency;
 	}
 
-	public String getScheduleDate()
+	public LocalTime getScheduleTime()
 	{
-		return scheduleDate;
+		return scheduleTime;
 	}
 
-	public void setScheduleDate(String scheduleDate)
+	public void setScheduleTime(LocalTime scheduleTime)
 	{
-		this.scheduleDate = scheduleDate;
+		this.scheduleTime = scheduleTime;
+	}
+
+	public String getDayOfWeek()
+	{
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(String dayOfWeek)
+	{
+		this.dayOfWeek = dayOfWeek;
+	}
+
+	public Integer getDayOfMonth()
+	{
+		return dayOfMonth;
+	}
+
+	public void setDayOfMonth(Integer dayOfMonth)
+	{
+		this.dayOfMonth = dayOfMonth;
 	}
 
 	public Boolean getIsActive()
@@ -91,6 +136,26 @@ public class SchedulerTemplateEntity
 		this.createdAt = createdAt;
 	}
 
+	public LocalDateTime getLastUpdatedAt()
+	{
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt)
+	{
+		this.lastUpdatedAt = lastUpdatedAt;
+	}
+
+	public CustomerTimeZoneEntity getTimeZone()
+	{
+		return timeZone;
+	}
+
+	public void setTimeZone(CustomerTimeZoneEntity timeZone)
+	{
+		this.timeZone = timeZone;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -101,12 +166,18 @@ public class SchedulerTemplateEntity
 		builder.append(scheduleName);
 		builder.append(", frequency=");
 		builder.append(frequency);
-		builder.append(", scheduleDate=");
-		builder.append(scheduleDate);
+		builder.append(", dayOfWeek=");
+		builder.append(dayOfWeek);
+		builder.append(", dayOfMonth=");
+		builder.append(dayOfMonth);
 		builder.append(", isActive=");
 		builder.append(isActive);
 		builder.append(", createdAt=");
 		builder.append(createdAt);
+		builder.append(", lastUpdatedAt=");
+		builder.append(lastUpdatedAt);
+		builder.append(", timeZone=");
+		builder.append(timeZone);
 		builder.append("]");
 		return builder.toString();
 	}

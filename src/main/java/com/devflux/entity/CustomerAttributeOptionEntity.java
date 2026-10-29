@@ -37,10 +37,6 @@ public class CustomerAttributeOptionEntity {
 
     private String optionValue;
 
-    private Integer displayOrder;
-
-    private Integer status;
-
 
     // =========================
     // Getters and Setters
@@ -69,21 +65,5 @@ public class CustomerAttributeOptionEntity {
 
     public void setOptionValue(String optionValue) {
         this.optionValue = optionValue;
-    }
-
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 }

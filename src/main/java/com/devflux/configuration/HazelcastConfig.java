@@ -15,51 +15,46 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.spring.cache.HazelcastCacheManager;
 
 @Configuration
-public class HazelcastConfig {
+public class HazelcastConfig
+{
 
-    @Bean(destroyMethod = "shutdown")
-    public HazelcastInstance hazelcastInstance() {
+	@Bean(destroyMethod = "shutdown")
+	public HazelcastInstance hazelcastInstance()
+	{
 
-        try {
-            ClassPathResource resource =
-                    new ClassPathResource("hazelcast.xml");
+		try
+		{
+			ClassPathResource resource = new ClassPathResource("hazelcast.xml");
 
-            if (!resource.exists()) {
-                throw new RuntimeException(
-                    "hazelcast.xml not found in src/main/resources"
-                );
-            }
+			if (!resource.exists())
+			{
+				throw new RuntimeException("hazelcast.xml not found in src/main/resources");
+			}
 
-            try (InputStream inputStream = resource.getInputStream()) {
+			try (InputStream inputStream = resource.getInputStream())
+			{
 
-                Config config =
-                        new XmlConfigBuilder(inputStream).build();
+				Config config = new XmlConfigBuilder(inputStream).build();
 
-                HazelcastInstance instance =
-                        Hazelcast.newHazelcastInstance(config);
+				HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
 
-                System.out.println(
-                    "Hazelcast started: "
-                    + instance.getName()
-                );
+				System.out.println("Hazelcast started: " + instance.getName());
 
-                System.out.println(
-                    "Hazelcast running: "
-                    + instance.getLifecycleService().isRunning()
-                );
+				System.out.println("Hazelcast running: " + instance.getLifecycleService().isRunning());
 
-                return instance;
-            }
+				return instance;
+			}
 
-        } catch (IOException e) {
-            throw new RuntimeException(
-                "Unable to load hazelcast.xml", e
-            );
-        }
-    }
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException("Unable to load hazelcast.xml", e);
+		}
+	}
 
-    @Bean
-    public CacheManager cacheManager(HazelcastInstance hazelcastInstance) {
-        return new HazelcastCacheManager(hazelcastInstance);
-    }
+	@Bean
+	public CacheManager cacheManager(HazelcastInstance hazelcastInstance)
+	{
+		return new HazelcastCacheManager(hazelcastInstance);
+	}
 }

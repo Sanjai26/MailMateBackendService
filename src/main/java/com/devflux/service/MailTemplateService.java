@@ -3,35 +3,41 @@ package com.devflux.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devflux.entity.MailTemplateEntity;
 import com.devflux.entity.UserEntity;
+import com.devflux.hazelcast.cachemanager.MailTemplateCacheManager;
 import com.devflux.repository.MailTemplateRepository;
-import com.devflux.repository.UserRepository;
 
 @Service
 public class MailTemplateService
 {
-	@Autowired
-	private MailTemplateRepository	mailTemplateRepository;
-
-	@Autowired
-	private UserRepository			userRepository;
+	private final MailTemplateRepository	mailTemplateRepository;
 
 
-	public MailTemplateEntity addMailTemplate(String templateName, String subject, String body, Boolean isHtml, long createdById)
+	private final UserService				userService;
+	
+	private final MailTemplateCacheManager mailTemplateCacheManager;
+
+	MailTemplateService(MailTemplateRepository mailTemplateRepository, UserService userService, MailTemplateCacheManager mailTemplateCacheManager)
+	{
+		this.mailTemplateRepository = mailTemplateRepository;
+		this.userService = userService;
+		this.mailTemplateCacheManager = mailTemplateCacheManager;
+	}
+
+	public MailTemplateEntity addMailTemplate(MailTemplateEntity mailTemplateEntity)
 	{
 		MailTemplateEntity mailTemplate = new MailTemplateEntity();
 		try
 		{
-			UserEntity createdBy = userRepository.findById(createdById).orElseThrow(() -> new RuntimeException("Master user not found with id: " + createdById));
+			UserEntity createdBy = userService.getUserIdFromAuthentication();
 
-			mailTemplate.setTemplateName(templateName);
-			mailTemplate.setSubject(subject);
-			mailTemplate.setBody(body);
-			mailTemplate.setIsHtml(isHtml);
+			mailTemplate.setTemplateName(mailTemplateEntity.getTemplateName());
+			mailTemplate.setSubject(mailTemplateEntity.getSubject());
+			mailTemplate.setBody(mailTemplateEntity.getBody());
+			mailTemplate.setIsHtml(mailTemplateEntity.getIsHtml());
 			mailTemplate.setCreatedBy(createdBy);
 			mailTemplate.setCreatedAt(LocalDateTime.now());
 		}
@@ -40,30 +46,20 @@ public class MailTemplateService
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return mailTemplateRepository.save(mailTemplate);
+		
+		MailTemplateEntity save = mailTemplateRepository.save(mailTemplate);
+		mailTemplateCacheManager.add(mailTemplate); // Add to cache
+		return save;
 	}
 
 	public List<MailTemplateEntity> getAllMailTemplates()
 	{
-		return mailTemplateRepository.findAll();
+		return mailTemplateCacheManager.getAll().stream().toList();
 	}
 
 	public MailTemplateEntity getMailTemplateById(long id)
 	{
 		return mailTemplateRepository.findById(id).orElseThrow(() -> new RuntimeException("Mail template not found with id: " + id));
-	}
-
-	public MailTemplateEntity modifyMailTemplate(long id, String templateName, String subject, String body, Boolean isHtml, long createdById)
-	{
-		MailTemplateEntity mailTemplate = getMailTemplateById(id);
-		UserEntity createdBy = userRepository.findById(createdById).orElseThrow(() -> new RuntimeException("Master user not found with id: " + createdById));
-
-		mailTemplate.setTemplateName(templateName);
-		mailTemplate.setSubject(subject);
-		mailTemplate.setBody(body);
-		mailTemplate.setIsHtml(isHtml);
-		mailTemplate.setCreatedBy(createdBy);
-		return mailTemplateRepository.save(mailTemplate);
 	}
 
 	public void deleteMailTemplateById(long id)
@@ -72,6 +68,21 @@ public class MailTemplateService
 		{
 			throw new RuntimeException("Mail template not found with id: " + id);
 		}
+		mailTemplateCacheManager.delete(id); // Remove from cache
 		mailTemplateRepository.deleteById(id);
+	}
+
+	public MailTemplateEntity modifyMailTemplate(MailTemplateEntity mailTemplate)
+	{
+		MailTemplateEntity tempMailId = getMailTemplateById(mailTemplate.getId());
+
+		tempMailId.setTemplateName(mailTemplate.getTemplateName());
+		tempMailId.setSubject(mailTemplate.getSubject());
+		tempMailId.setBody(mailTemplate.getBody());
+		tempMailId.setIsHtml(mailTemplate.getIsHtml());
+		tempMailId.setCreatedBy(userService.getUserIdFromAuthentication());
+		tempMailId.setLastUpdatedAt(LocalDateTime.now());
+		mailTemplateCacheManager.update(tempMailId); // Update from cache
+		return mailTemplateRepository.save(tempMailId);
 	}
 }

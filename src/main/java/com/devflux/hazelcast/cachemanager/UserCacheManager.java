@@ -61,4 +61,16 @@ public class UserCacheManager
 	{
 		getMap().clear();
 	}
+
+	public UserEntity getUserEntitiyByUserName(String username)
+	{
+		for (UserEntity userEntity : getMap().values())
+		{
+			if (userEntity.getUsername().equalsIgnoreCase(username))
+			{
+				return userEntity;
+			}
+		}
+		return null;
+	}
 }

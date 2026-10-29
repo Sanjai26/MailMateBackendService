@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.devflux.entity.UserEntity;
+import com.devflux.entity.MailTemplateEntity;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 
@@ -20,31 +20,31 @@ public class MailTemplateCacheManager
 		this.hazelcastInstance = hazelcastInstance;
 	}
 
-	private IMap<Long, UserEntity> getMap()
+	private IMap<Long, MailTemplateEntity> getMap()
 	{
 		return hazelcastInstance.getMap("mail-template");
 	}
 
 	// CREATE
-	public void add(UserEntity entity)
+	public void add(MailTemplateEntity entity)
 	{
 		getMap().put(entity.getId(), entity);
 	}
 
 	// READ
-	public UserEntity get(Long id)
+	public MailTemplateEntity get(Long id)
 	{
 		return getMap().get(id);
 	}
 
 	// READ ALL
-	public Collection<UserEntity> getAll()
+	public Collection<MailTemplateEntity> getAll()
 	{
 		return getMap().values();
 	}
 
 	// UPDATE
-	public void update(UserEntity entity)
+	public void update(MailTemplateEntity entity)
 	{
 		getMap().put(entity.getId(), entity);
 	}

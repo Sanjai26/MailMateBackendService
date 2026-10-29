@@ -1,0 +1,17 @@
+version: "3.7"
+
+service:
+	app: 
+		build:
+		ports:
+			- "8080:8080"
+		
+	mysql:
+		image: mysql:latest
+		environment:
+			MYSQL_ROOT_PASSWORD: root
+			MYSQL_DB: mailbs
+			MYSQL_USER: root
+		ports: 
+			- "3306:3306"
+			
